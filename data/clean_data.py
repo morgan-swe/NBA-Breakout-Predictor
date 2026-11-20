@@ -1,17 +1,16 @@
 import pandas as pd
 import unicodedata
-import pathlib
+from utilities import load_data
 
 # Load the data from the CSV file
-data_path = "data/raw/Player Per Game.csv"
-df = pd.read_csv(data_path)
+df = load_data.load_raw_ppg()
 
 # Standardize text
-"""
-Removes name accents to make searching for the player easier:
-Luka Dončić now become Luka Doncic
-"""
 def strip_accents(value):
+  """
+  Removes name accents to make searching for the player easier:
+  Luka Dončić now become Luka Doncic
+  """
   if not isinstance(value, str):
     return value
   normalized = unicodedata.normalize("NFKD", value)
@@ -31,7 +30,7 @@ df = df[df["lg"] == "NBA"] # Drop any leagues that arent the NBA
 # Drop 2027 season since its incomplete
 df = df[~df["season"].isin([2027])]
 
-# Drop rows where games played is 0
+# Drop players with fewer than 10 games (small samples give noisy per-game stats)
 df = df[df["g"] >= 10]
 
 # Remove eras that don't contain the 3pt stats
@@ -50,7 +49,6 @@ df = df.drop(columns=["is_total", "has_total"])
 assert not df.duplicated(["player_id", "season"]).any()
 
 # Output the cleaned data
-output_dir = pathlib.Path("data/processed")
-output_dir.mkdir(parents=True, exist_ok=True)
+load_data.PROCESSED_DIR.mkdir(parents=True, exist_ok=True)
 
-df.to_csv(output_dir / "player-per-game-cleaned.csv", index=False)
+df.to_csv(load_data.CLEAN_PPG_PATH, index=False)
