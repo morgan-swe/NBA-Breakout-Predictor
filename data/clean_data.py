@@ -30,8 +30,8 @@ df = df[df["lg"] == "NBA"] # Drop any leagues that arent the NBA
 # Drop 2027 season since its incomplete
 df = df[~df["season"].isin([2027])]
 
-# Drop players with fewer than 10 games (small samples give noisy per-game stats)
-df = df[df["g"] >= 10]
+# Drop players with fewer than 40 games (small samples give noisy per-game stats)
+df = df[df["g"] >= 40]
 
 # Remove eras that don't contain the 3pt stats
 df = df[df["season"] >= 1980]
