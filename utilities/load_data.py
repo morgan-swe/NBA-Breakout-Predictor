@@ -7,6 +7,7 @@ RAW_DIR = ROOT / "data" / "raw"
 PROCESSED_DIR = ROOT / "data" / "processed"
 
 RAW_PPG_PATH = RAW_DIR / "Player Per Game.csv"
+RAW_ADV_PATH = RAW_DIR / "Advanced.csv"
 CLEAN_PPG_PATH = PROCESSED_DIR / "player-per-game-cleaned.csv"
 
 
